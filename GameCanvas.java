@@ -24,39 +24,38 @@ public class GameCanvas extends JComponent {
         setLayout(null);
         elements = new ArrayList<>();
 
+        // Load intro music
         File music1 = new File("./assets/intro.wav");
         AudioInputStream audioStream = AudioSystem.getAudioInputStream(music1);
         clip1 = AudioSystem.getClip();
         clip1.open(audioStream);
 
-
+        // Load secondary music
         try {
             File music2 = new File("./assets/roblox.wav");
             AudioInputStream audioStream2 = AudioSystem.getAudioInputStream(music2);
             clip2 = AudioSystem.getClip();
             clip2.open(audioStream2);
-            // Uncomment this to play the second music if needed
-            // clip2.start();
         } catch (Exception ex) {
             ex.printStackTrace();
             System.err.println("Failed to load or play roblox.wav");
         }
-        
 
-
+        // Initialize all components
         introBackground = new IntroBackground();
         playButton = new PlayButton();
-        chooseKingdom = new Kingdom();
+        chooseKingdom = new Kingdom();  // single Kingdom instance
         chooseEngine = new Engine();
         wheels = new Wheels();
         brakes = new Brakes();
         addon = new Addon();
         maps = new Maps();
-        readyScreen = new ReadyScreen();
+        readyScreen = new ReadyScreen(chooseKingdom);  // pass Kingdom to ReadyScreen ✅
 
         elements.add(introBackground);
         add(playButton);
 
+        // Play button logic
         playButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -70,6 +69,7 @@ public class GameCanvas extends JComponent {
             }
         });
 
+        // Kingdom selection
         chooseKingdom.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -77,11 +77,11 @@ public class GameCanvas extends JComponent {
                     remove(chooseKingdom);
                     add(chooseEngine);
                     repaint();
-
                 }
             }
         });
 
+        // Engine selection
         chooseEngine.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -94,12 +94,13 @@ public class GameCanvas extends JComponent {
             }
         });
 
+        // Wheel selection and back
         wheels.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (wheels.isBackPicked()) {
-                    wheels.nullify();  
-                    wheels.backPicked = false;  
+                    wheels.nullify();
+                    wheels.backPicked = false;
                     remove(wheels);
                     chooseEngine.nullify();
                     add(chooseEngine);
@@ -107,19 +108,20 @@ public class GameCanvas extends JComponent {
                     System.out.println("\nWent back to Engine selection.\n");
                 } else if (wheels.isSlicksPicked() || wheels.isWetsPicked()) {
                     remove(wheels);
-                    wheels.nullify();  
+                    wheels.nullify();
                     add(brakes);
                     repaint();
                 }
             }
         });
 
+        // Brakes selection and back
         brakes.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (brakes.isBackPicked()) {
                     brakes.changebackPicked(false);
-                    brakes.nullify();  // Optional cleanup
+                    brakes.nullify();
                     remove(brakes);
                     add(wheels);
                     repaint();
@@ -132,12 +134,13 @@ public class GameCanvas extends JComponent {
             }
         });
 
+        // Addon selection and back
         addon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (addon.isBackPicked()) {
                     addon.changebackPicked(false);
-                    addon.nullify();  
+                    addon.nullify();
                     remove(addon);
                     brakes.nullify();
                     add(brakes);
@@ -151,12 +154,13 @@ public class GameCanvas extends JComponent {
             }
         });
 
+        // Map selection and transition to ReadyScreen
         maps.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (maps.isBackPicked()) {
                     maps.changebackPicked(false);
-                    maps.nullify(); 
+                    maps.nullify();
                     remove(maps);
                     add(addon);
                     repaint();
@@ -165,20 +169,27 @@ public class GameCanvas extends JComponent {
                     remove(maps);
                     add(readyScreen);
                     repaint();
-
                 }
-            } 
+            }
         });
 
-       
+        readyScreen.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (readyScreen.isBackPicked()){
+                    readyScreen.nullify();
+                    remove(readyScreen);
+                    readyScreen.changebackPicked(false);
+                    add(maps);
+                    repaint();
+                    System.out.println("\nWent back to Maps selection. \n");
+                } else if (readyScreen.isBlueBerryReady() || readyScreen.isStrawberryReady()){
 
-
-
-
-        
+                }
+            }
+        });
     }
 
-    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

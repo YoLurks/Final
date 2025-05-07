@@ -4,8 +4,6 @@ import javax.swing.*;
 
 public class ReadyScreen extends JComponent {
 
-    public static final String SLICKS = "Slicks";
-    public static final String WETS = "Wets";
     public boolean blueberry_Ready;
     public boolean strawberry_Ready;
     public boolean backPicked;
@@ -19,118 +17,145 @@ public class ReadyScreen extends JComponent {
     private Maps maps;
     private Kingdom kingdom;
 
+    private final Rectangle readyArea = new Rectangle(323, 487, 404, 114);
+    private final Rectangle exitArea = new Rectangle(53, 51, 65, 65);
 
-
-
-    private final Rectangle readyArea = new Rectangle(323, 487, 404, 114); 
-    private final Rectangle exitArea = new Rectangle(53,51,65,65);
-
-    public ReadyScreen() {
+    public ReadyScreen(Kingdom kingdom) {
+        this.kingdom = kingdom;
         blueberryWait = new ImageIcon("./assets/waitBlueberry.png").getImage();
         blueberryReady = new ImageIcon("./assets/readyBlueberry.png").getImage();
         blueberryExit = new ImageIcon("./assets/exitBlueberry.png").getImage();
         strawberryWait = new ImageIcon("./assets/waitStrawberry.png").getImage();
-        strawberryReady = new ImageIcon("./assets/readyStrawberrypng").getImage();
+        strawberryReady = new ImageIcon("./assets/readyStrawberry.png").getImage();
         strawberryExit = new ImageIcon("./assets/exitStrawberry.png").getImage();
+
         blueberry_Ready = false;
         strawberry_Ready = false;
         backPicked = false;
+
         maps = new Maps();
-        kingdom = new Kingdom();
 
         setBounds(0, 0, 1024, 768);
 
-        if (kingdom.getType().equals("Blueberry")){
+        String type = kingdom.getType();
+        if ("Blueberry".equals(type)) {
             currentImage = blueberryWait;
-        }else if (kingdom.getType().equals("Strawberry")){
+        } else if ("Strawberry".equals(type)) {
             currentImage = strawberryWait;
+        } else {
+            System.err.println("Warning: Kingdom type is null or unknown. Defaulting to Blueberry wait screen.");
+            currentImage = blueberryWait;
         }
 
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
                 Point p = e.getPoint();
-                if (kingdom.getType().equals("Blueberry")){
-                if (readyArea.contains(p)) {
-                    currentImage = blueberryReady;
-                } else if (exitArea.contains(p)) {
-                    currentImage = blueberryExit;
-                } else {
-                    currentImage = blueberryWait;
+                String type = kingdom.getType();
+
+                // Check hover effects only if not ready
+                if ("Blueberry".equals(type) && !blueberry_Ready) {
+                    if (exitArea.contains(p)) {
+                        currentImage = blueberryExit;
+                    } else {
+                        currentImage = blueberryWait;
+                    }
                 }
-                repaint();
-            }
-                if (kingdom.getType().equals("Strawberry")){
-                    if (readyArea.contains(p)) {
-                        currentImage = strawberryReady;
-                    } else if (exitArea.contains(p)) {
+
+                if ("Strawberry".equals(type) && !strawberry_Ready) {
+                    if (exitArea.contains(p)) {
                         currentImage = strawberryExit;
                     } else {
                         currentImage = strawberryWait;
                     }
-                    repaint();
                 }
-        }
 
+                repaint();
+            }
         });
 
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Point p = e.getPoint();
-                if (kingdom.getType().equals("Blueberry")){
-                if (readyArea.contains(p) && blueberry_Ready == false) {
-                    blueberry_Ready = true;
-                    System.out.println("Driver: Ready");
-                } else if (readyArea.contains(p) && blueberry_Ready == true) {
-                    blueberry_Ready = false;
-                    System.out.println("Driver: Not Ready");
+                String type = kingdom.getType();
 
-                }else if (exitArea.contains(p) && blueberry_Ready == false) {
-                    maps.nullify();
-                    backPicked = true;
-                    maps.changeMap(null);
+                // Handle click logic for Blueberry
+                if ("Blueberry".equals(type)) {
+                    if (readyArea.contains(p)) {
+                        // Toggle ready state for Blueberry only if it's not backpicked
+                        if (!blueberry_Ready && !backPicked) {
+                            blueberry_Ready = true;
+                            currentImage = blueberryReady;
+                            repaint();
+                            System.out.println("Driver: Ready (Blueberry)");
+                        } else if (blueberry_Ready && !backPicked) {
+                            blueberry_Ready = false;
+                            currentImage = blueberryWait;
+                            repaint();
+                            System.out.println("Driver: Not Ready (Blueberry)");
+                        }
+                    } else if (exitArea.contains(p)) {
+                        // If clicked on the exit area, set backPicked to true
+                        if (!blueberry_Ready) {
+                            maps.nullify();
+                            backPicked = true;
+                            maps.changeMap(null);
+                            System.out.println("Exiting to Maps (Blueberry)");
+                        }
+                    }
                 }
-            }
 
-            if (kingdom.getType().equals("Strawberry")){
-                if (readyArea.contains(p) && strawberry_Ready == false) {
-                    strawberry_Ready = true;
-                    System.out.println("Driver: Ready");
-                } else if (readyArea.contains(p) && strawberry_Ready == true) {
-                    strawberry_Ready = false;
-                    System.out.println("Driver: Not Ready");
-
-                }else if (exitArea.contains(p) && strawberry_Ready == false) {
-                    maps.nullify();
-                    backPicked = true;
-                    maps.changeMap(null);
+                // Handle click logic for Strawberry
+                if ("Strawberry".equals(type)) {
+                    if (readyArea.contains(p)) {
+                        // Toggle ready state for Strawberry only if it's not backpicked
+                        if (!strawberry_Ready && !backPicked) {
+                            strawberry_Ready = true;
+                            currentImage = strawberryReady;
+                            repaint();
+                            System.out.println("Driver: Ready (Strawberry)");
+                        } else if (strawberry_Ready && !backPicked) {
+                            strawberry_Ready = false;
+                            currentImage = strawberryWait;
+                            repaint();
+                            System.out.println("Driver: Not Ready (Strawberry)");
+                        }
+                    } else if (exitArea.contains(p)) {
+                        
+                        if (!strawberry_Ready) {
+                            maps.nullify();
+                            backPicked = true;
+                            maps.changeMap(null);
+                            System.out.println("Exiting to Maps (Strawberry)");
+                        }
+                    }
                 }
-            }
-                
             }
         });
     }
 
-
-
-    public boolean isBlueBerryReady(){
+    public boolean isBlueBerryReady() {
         return blueberry_Ready;
     }
 
-    public boolean isStrawberryReady(){
+    public boolean isStrawberryReady() {
         return strawberry_Ready;
     }
 
-    public boolean isBackPicked(){
+    public boolean isBackPicked() {
         return backPicked;
     }
 
-
-    public void nullify(){
+    public void nullify() {
         blueberry_Ready = false;
         strawberry_Ready = false;
     }
+
+    public void changebackPicked(boolean x){
+        backPicked = x;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
