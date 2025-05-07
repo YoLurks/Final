@@ -59,22 +59,21 @@ public class Maps extends JComponent {
                 Point p = e.getPoint();
                 if (hoverArea1.contains(p)) {
                     selectedMap = STRAWBERRY;
-                    System.out.println(selectedMap + " selected!");
+                    System.out.println("Map: " + selectedMap);
                     strawPicked = true;
                 } else if (hoverArea2.contains(p)) {
                     selectedMap = BLUEBERRY;
-                    System.out.println(selectedMap + " selected!");
+                    System.out.println("Map: " + selectedMap);
                     bluePicked = true;
                 } else if (hoverArea3.contains(p)) {
                     selectedMap = CHOCOLATE;
-                    System.out.println(selectedMap + " selected!");
+                    System.out.println("Map: " + selectedMap);
                     chocoPicked = true;
                 } else if (hoverArea4.contains(p)) {
                     selectedMap = null;
                     addon.changeAddonType(null);
                     backPicked = true;
                     addon.nullify();
-                    System.out.println("Returning to Addon selection...");
                 }
             }
         });

@@ -17,6 +17,7 @@ public class GameCanvas extends JComponent {
     private Brakes brakes;
     private Addon addon;
     private Maps maps;
+    private ReadyScreen readyScreen;
 
     public GameCanvas() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         setPreferredSize(new Dimension(1024, 768));
@@ -51,6 +52,7 @@ public class GameCanvas extends JComponent {
         brakes = new Brakes();
         addon = new Addon();
         maps = new Maps();
+        readyScreen = new ReadyScreen();
 
         elements.add(introBackground);
         add(playButton);
@@ -59,7 +61,7 @@ public class GameCanvas extends JComponent {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (playButton.isClicked(e.getPoint())) {
-                    System.out.println("Play button clicked!");
+                    System.out.println("\nTime to build your car!\n");
                     remove(playButton);
                     elements.remove(introBackground);
                     add(chooseKingdom);
@@ -75,7 +77,7 @@ public class GameCanvas extends JComponent {
                     remove(chooseKingdom);
                     add(chooseEngine);
                     repaint();
-                    System.out.println("Kingdom chosen. Transitioning...");
+
                 }
             }
         });
@@ -88,7 +90,6 @@ public class GameCanvas extends JComponent {
                     chooseEngine.nullify();
                     add(wheels);
                     repaint();
-                    System.out.println("Engine chosen.");
                 }
             }
         });
@@ -97,19 +98,18 @@ public class GameCanvas extends JComponent {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (wheels.isBackPicked()) {
-                    wheels.nullify();  // Reset selection
-                    wheels.backPicked = false;  // Avoid looping
+                    wheels.nullify();  
+                    wheels.backPicked = false;  
                     remove(wheels);
                     chooseEngine.nullify();
                     add(chooseEngine);
                     repaint();
-                    System.out.println("Went back to Engine selection.");
+                    System.out.println("\nWent back to Engine selection.\n");
                 } else if (wheels.isSlicksPicked() || wheels.isWetsPicked()) {
                     remove(wheels);
-                    wheels.nullify();  // Optional cleanup
+                    wheels.nullify();  
                     add(brakes);
                     repaint();
-                    System.out.println("Wheels chosen.");
                 }
             }
         });
@@ -123,12 +123,11 @@ public class GameCanvas extends JComponent {
                     remove(brakes);
                     add(wheels);
                     repaint();
-                    System.out.println("Went back to Wheels selection.");
+                    System.out.println("\nWent back to Wheels selection.\n");
                 } else if (brakes.isCandyPicked() || brakes.isStripePicked() || brakes.isMagicPicked()) {
                     remove(brakes);
                     add(addon);
                     repaint();
-                    System.out.println("Brakes chosen.");
                 }
             }
         });
@@ -143,12 +142,11 @@ public class GameCanvas extends JComponent {
                     brakes.nullify();
                     add(brakes);
                     repaint();
-                    System.out.println("Went back to Brakes selection.");
+                    System.out.println("\nWent back to Brakes selection.\n");
                 } else if (addon.isAddonPicked() || addon.isXPicked()) {
                     remove(addon);
                     add(maps);
                     repaint();
-                    System.out.println("Addon chosen.");
                 }
             }
         });
@@ -158,19 +156,22 @@ public class GameCanvas extends JComponent {
             public void mouseClicked(MouseEvent e) {
                 if (maps.isBackPicked()) {
                     maps.changebackPicked(false);
-                    maps.nullify();  // Optional cleanup
+                    maps.nullify(); 
                     remove(maps);
                     add(addon);
                     repaint();
-                    System.out.println("Went back to Brakes selection.");
+                    System.out.println("\nWent back to Add-on selection.\n");
                 } else if (maps.isStrawPicked() || maps.isBlueberryPicked() || maps.isChocoPicked()) {
                     remove(maps);
+                    add(readyScreen);
                     repaint();
-                    System.out.println("Map chosen.");
 
                 }
             } 
         });
+
+       
+
 
 
 

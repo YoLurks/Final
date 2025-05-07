@@ -48,11 +48,11 @@ public class Kingdom extends JComponent {
                 if (hoverArea1.contains(p)) {
                     selectedKingdomType = STRAWBERRY;
                     strawberryPicked = true;
-                    System.out.println(STRAWBERRY + " selected!");
+                    System.out.println("Kingdom: " + STRAWBERRY );
                 } else if (hoverArea2.contains(p)) {
                     selectedKingdomType = BLUEBERRY;
                     blueberryPicked = true;
-                    System.out.println(BLUEBERRY + " selected!");
+                    System.out.println("Kingdom: " + BLUEBERRY);
                 }
             }
         });

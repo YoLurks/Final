@@ -32,6 +32,7 @@ public class Addon extends JComponent {
         addonPicked = false;
         xPicked = false;
         backPicked = false;
+        brakes = new Brakes();
 
         setBounds(0, 0, 1024, 768);
 
@@ -59,13 +60,12 @@ public class Addon extends JComponent {
                 if (hoverArea1.contains(p)) {
                     AddonType = ADDON;
                     addonPicked = true;
-                    System.out.println(AddonType + " selected!");
+                    System.out.println("+ " + AddonType + " add-on");
                 } else if (hoverArea2.contains(p)) {
                     AddonType = NONE;
                     xPicked = true;
-                    System.out.println(AddonType + " selected!");
+                    System.out.println("No add-on added");
                 } else if (hoverArea3.contains(p)) {
-                    System.out.println("Pick Engine again. ");
                     AddonType = null;
                     brakes.nullify();
                     backPicked = true;

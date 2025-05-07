@@ -32,6 +32,7 @@ public class Wheels extends JComponent {
         slicksPicked = false;
         wetsPicked = false;
         backPicked = false;
+        engine = new Engine();
 
         setBounds(0, 0, 1024, 768);
 
@@ -59,13 +60,12 @@ public class Wheels extends JComponent {
                 if (hoverArea1.contains(p)) {
                     selectedWheelsType = SLICKS;
                     slicksPicked = true;
-                    System.out.println(SLICKS + " selected!");
+                    System.out.println("Wheels: " + SLICKS);
                 } else if (hoverArea2.contains(p)) {
                     selectedWheelsType = WETS;
                     wetsPicked = true;
-                    System.out.println(WETS + " selected!");
+                    System.out.println("Wheels: " + WETS);
                 } else if (hoverArea3.contains(p)) {
-                    System.out.println("Pick Engine again. ");
                     selectedWheelsType = null;
                     engine.nullify();
                     backPicked = true;

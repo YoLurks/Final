@@ -69,15 +69,15 @@ public class Engine extends JComponent {
                 if (hoverArea1.contains(p)) {
                     pickedEngineType = SHORTCAKE;
                     shortcakePicked = true;
-                    System.out.println(SHORTCAKE + " selected!");
+                    System.out.println("Engine: " + SHORTCAKE);
                 } else if (hoverArea2.contains(p)) {
                     pickedEngineType = CHOCO;
                     chocoPicked = true;
-                    System.out.println(CHOCO + " selected!");
+                    System.out.println("Engine: " + CHOCO );
                 } else if (hoverArea3.contains(p)) {
                     pickedEngineType = MATCHA;
                     matchaPicked = true;
-                    System.out.println(MATCHA + " selected!");
+                    System.out.println("Engine: " + MATCHA);
                 }
             }
         });

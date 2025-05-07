@@ -59,22 +59,21 @@ public class Brakes extends JComponent {
                 Point p = e.getPoint();
                 if (hoverArea1.contains(p)) {
                     selectedBrakeType = CANDY;
-                    System.out.println(CANDY + " selected!");
+                    System.out.println("Brakes: " + CANDY);
                     candyPicked = true;
                 } else if (hoverArea2.contains(p)) {
                     selectedBrakeType = STRIPE;
-                    System.out.println(STRIPE + " selected!");
+                    System.out.println("Brakes: " + STRIPE);
                     stripePicked = true;
                 } else if (hoverArea3.contains(p)) {
                     selectedBrakeType = MAGIC;
-                    System.out.println(MAGIC + " selected!");
+                    System.out.println("Brakes: " + MAGIC);
                     magicPicked = true;
                 } else if (hoverArea4.contains(p)) {
                     selectedBrakeType = null;
                     wheels.changeWheelType(null);
                     backPicked = true;
                     wheels.nullify();
-                    System.out.println("Returning to Engine selection...");
                 }
             }
         });
